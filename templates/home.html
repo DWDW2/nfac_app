@@ -9,3 +9,9 @@
 {% block buttoneve %}
 <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Events</button>
 {% endblock %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<h2>{{ description }}</h2>
+<img src="{{ source_for_url }}" alt="">
+{% endblock %}
