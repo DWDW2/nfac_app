@@ -2,10 +2,11 @@
 from config import db
 
 class Users(db.Model):
+    __table__= 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(250), unique=True,
                          nullable=False)
-    password = db.Column(db.String(250),
+    password = db.Column(db.String(1000),
                          nullable=False)
     email = db.Column(db.String(250), unique=True, nullable=False)
 
