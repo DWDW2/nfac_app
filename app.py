@@ -47,7 +47,7 @@ app.config['OAUTH2_PROVIDERS'] = {
 
 db = SQLAlchemy(app)
 login = LoginManager(app)
-login.login_view = 'index'
+login.login_view = 'home'
 
 
 class User(UserMixin, db.Model):
@@ -64,20 +64,24 @@ def load_user(id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    user = User().get('username')
+    return render_template('home.html', user=user)
 
+@app.route('/signup')
+def sign_up():
+    return render_template("sign_up.html")
 
 @app.route('/logout')
 def logout():
     logout_user()
     flash('You have been logged out.')
-    return redirect(url_for('index'))
+    return redirect(url_for('sign_up'))
 
 
-@app.route('/authorize/<provider>')
+@app.route('/signup/authorize/<provider>')
 def oauth2_authorize(provider):
     if not current_user.is_anonymous:
-        return redirect(url_for('index'))
+        return redirect(url_for('sign_up'))
 
     provider_data = current_app.config['OAUTH2_PROVIDERS'].get(provider)
     if provider_data is None:
@@ -100,7 +104,7 @@ def oauth2_authorize(provider):
     return redirect(provider_data['authorize_url'] + '?' + qs)
 
 
-@app.route('/callback/<provider>')
+@app.route('/signup/callback/<provider>')
 def oauth2_callback(provider):
     if not current_user.is_anonymous:
         return redirect(url_for('index'))
