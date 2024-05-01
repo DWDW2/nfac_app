@@ -1,19 +1,18 @@
 # config.py
-from flask_login import LoginManager, UserMixin, login_user, logout_user
+
 from flask import Flask
 from flask_cors import CORS
-from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 
 # instantiate ap and set attributes
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
 # define metadata, set up Flask-Migrate for migrations, instantiate d
-db = SQLAlchemy()
+db = SQLAlchemy(app)
 
 # enables Cross-Origin Resource Sharing, allowing requests front-end
 CORS(app)
