@@ -64,8 +64,7 @@ def load_user(id):
 
 @app.route('/')
 def index():
-    user = User().get('username')
-    return render_template('home.html', user=user)
+    return render_template('home.html')
 
 @app.route('/signup')
 def sign_up():
