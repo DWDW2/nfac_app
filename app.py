@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
-
+#config
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -12,7 +12,7 @@ app.json.compact = False
 db = SQLAlchemy(app=app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-
+#database models
 class Users(db.Model):
     __tablename__= 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -26,9 +26,12 @@ class Events(db.Model):
     __tablename__ = 'events'
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
-    decription = db.Column(db.String, nullable=False)
-    date = db.Column(db.Integer, nullable=False)
+    title = db.Column(db.String(300), nullable=False)
+    decription = db.Column(db.String(300))
+    url_to_img = db.Column(db.String(300))
+    envent_url = db.Column(db.String(300), nullable=False)
+    category = db.Column(db.String(300), nullable=False)
+    city = db.Column(db.String(300), nullable=False)
     
 class User_google_and_gith(db.Model):
     __tablename__ = 'users_external'
@@ -40,7 +43,7 @@ class User_google_and_gith(db.Model):
 with app.app_context():
 	db.create_all()
 
-
+#app
 @login_manager.user_loader
 def loader_user(user_id):
 	return Users.query.get(user_id)
@@ -99,6 +102,13 @@ def logout():
     flash('You have been logged out.', 'info')
     # Redirect the user to the index page or any other page you prefer
     return redirect(url_for('home'))
+
+
+@app.route('/findevents')
+def findEvents():
+     user = session['user_id']
+     return render_template('events.html', user=user)
+
+
 if __name__ == "__main__":
 	app.run()
-

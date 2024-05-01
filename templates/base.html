@@ -17,7 +17,7 @@
         <nav class="nav nav-masthead justify-content-center float-md-end">
           <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>
           <a class="nav-link" href="{{url_for('home')}}">About</a>
-          <a class="nav-link" href="{{url_for('find_event')}}">Find event</a>
+          <a class="nav-link" href="{{url_for('findEvents')}}">Find event</a>
           {% if user %}
             <a class="nav-link btn btn-primary links" href="{{ url_for('logout')}}">Log out</a>
           {% else %}
