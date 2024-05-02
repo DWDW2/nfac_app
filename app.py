@@ -21,6 +21,7 @@ class Users(db.Model):
     password = db.Column(db.String(1000),
                          nullable=False)
     email = db.Column(db.String(250), unique=True, nullable=False)
+    registered_events = db.relationship('UserEvent', back_populates='user')
 
 class Events(db.Model):
     __tablename__ = 'events'
@@ -32,13 +33,14 @@ class Events(db.Model):
     envent_url = db.Column(db.String(300), nullable=False)
     category = db.Column(db.String(300), nullable=False)
     city = db.Column(db.String(300), nullable=False)
-    
-class User_google_and_gith(db.Model):
-    __tablename__ = 'users_external'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(250), unique=True, nullable=False)
-    username = db.Column(db.String(250), unique=True,
-                         nullable=False)
+    registrations = db.relationship('UserEvent', back_populates='event')
+
+class UserEvent(db.Model):
+    __tablename__ = 'user_events'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'), primary_key=True)
+    user = db.relationship('Users', back_populates='registered_events')
+    event =db.relationship('Events', back_populates='registrations')
 
 with app.app_context():
 	db.create_all()
@@ -82,7 +84,7 @@ def sign_up():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        identifier = request.form['identifier']  # This can be either username or email
+        identifier = request.form['identifier']  
         password = request.form['password']
         user = Users.query.filter((Users.username == identifier) | (Users.email == identifier)).first()
         if user and check_password_hash(user.password, password):
@@ -98,17 +100,33 @@ def login():
 def logout():
     # Clear the user's session
     session.pop('user_id', None)
-    # Optionally, you can also flash a message indicating successful logout
+
     flash('You have been logged out.', 'info')
-    # Redirect the user to the index page or any other page you prefer
+
     return redirect(url_for('home'))
 
-
 @app.route('/findevents')
+def events_page():
+    return render_template('events.html')
+@app.route('/search', methods=['GET', 'POST'])
 def findEvents():
-     user = session['user_id']
-     return render_template('events.html', user=user)
+    city = request.args.get('city')
+    category = request.args.get('category')
 
+    print(city, category)
 
+    if city or category:
+        results = Events.query.filter(Events.category.icontains(category) | Events.city.icontains(city)) \
+        .order_by(Events.id.asc()).all()
+    else:
+        results = Events.query.order_by(Events.id.asc())
+
+    return render_template("events_result.html", results=results)
+
+    
+
+@app.route('/events_result')
+def events_result():
+     return render_template(events_result, Operations=2)
 if __name__ == "__main__":
 	app.run()
