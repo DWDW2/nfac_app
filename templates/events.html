@@ -4,7 +4,7 @@
 <div class="container">
   <h2 class="mt-4 mb-4">Search Events</h2>
   <form action="/search" method="GET">
-      <div class="form-group">
+      <div class="form-group" style="width: 30%; margin-left: auto; margin-right: auto;">
           <label for="city">Select City:</label>
           <select id="city" name="city" class="form-control">
             <option value="Алматы">Алматы</option>
@@ -39,7 +39,7 @@
           </select>
       </div>
       
-      <div class="form-group">
+      <div class="form-group" style="width: 30%; margin-left: auto; margin-right: auto;">
           <label for="category">Select Category:</label>
           <select id="category" name="category" class="form-control">
             <option value="">All Categories</option>
@@ -72,68 +72,3 @@
 
 
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Form</title>
-</head>
-<body>
-    <h2>Search Events</h2>
-    <form action="/search" method="GET">
-        <label for="city">Select City:</label>
-        <select id="city" name="city">
-            <option value="Алматы">Алматы</option>
-            <option value="Астана">Астана</option>
-            <option value="Бишкек">Бишкек</option>
-            <option value="Туркестан">Туркестан</option>
-            <option value="Караганда">Караганда</option>
-            <option value="Актобе">Актобе</option>
-            <option value="Аксу">Аксу</option>
-            <option value="Актау">Актау</option>
-            <option value="Атырау">Атырау</option>
-            <option value="Жанаозен">Жанаозен</option>
-            <option value="Жезказган">Жезказган</option>
-            <option value="Кокшетау">Костанай</option>
-            <option value="Кызылорда">Кызылорда</option>
-            <option value="Павлодар">Павлодар</option>
-            <option value="Петропавловск">Петропавловск</option>
-            <option value="Риддер">Риддер</option>
-            <option value="Рудный">Рудный</option>
-            <option value="Семей">Семей</option>
-            <option value="Талгар">Талгар</option>
-            <option value="Талдыкорган">Талдыкорган</option>
-            <option value="Тараз">Тараз</option>
-            <option value="Темиртау">Темиртау</option>
-            <option value="Уральск">Уральск</option>
-            <option value="Усть-Каменогорск">Усть-Каменогорск</option>
-            <option value="Экибастуз">Экибастуз</option>
-            <option value="Ташкент">Ташкент</option>
-            <option value="Ош">Ош</option>
-            <option value="Степногорск">Степногорск</option>
- 
-            <!-- Add more city options as needed -->
-        </select><br><br>
-        
-        <label for="category">Select Category:</label>
-        <select id="category" name="category">
-            <option value="">All Categories</option>
-            <option value="Stand Up">Stand Up</option>
-            <option value="Концерты">Концерты</option>
-            <option value="Спорт">Спорт</option>
-            <option value="Развлечения">Развлечения</option>
-            <option value="Мастер-классы">Мастер-классы</option>
-            <option value="Выставки и ярмарки">Выставки и ярмарки</option>
-            <option value="Детям">Детям</option>
-            <option value="Театр">Театр</option>
-            <option value="Бесплатные события">Бесплатные события</option>
-            <option value="Билеты">Только Билеты</option>
-            <!-- Add more category options as needed -->
-        </select><br><br>
-
-        <input type="submit" value="Find!">
-    </form>
-</body>
-</html>

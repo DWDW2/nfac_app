@@ -107,26 +107,35 @@ def logout():
 
 @app.route('/findevents')
 def events_page():
-    return render_template('events.html')
+    if 'user_id' in session:
+        user = Users.query.filter_by(id=session['user_id']).first()
+        username = user.username
+    else:
+         username = ''
+    return render_template('events.html', user=username)
 @app.route('/search', methods=['GET', 'POST'])
 def findEvents():
+    if 'user_id' in session:
+        user = Users.query.filter_by(id=session['user_id']).first()
+        username = user.username
+    else:
+         username = ''
     city = request.args.get('city')
     category = request.args.get('category')
 
     print(city, category)
 
     if city or category:
-        results = Events.query.filter(Events.category.icontains(category) | Events.city.icontains(city)) \
+        results = Events.query.filter(Events.category.icontains(category) & Events.city.icontains(city)) \
         .order_by(Events.id.asc()).all()
     else:
         results = Events.query.order_by(Events.id.asc())
-
-    return render_template("events_result.html", results=results)
-
+    return render_template("events_result.html", results=results, user=username)
     
 
-@app.route('/events_result')
-def events_result():
-     return render_template(events_result, Operations=2)
+
+
+
+
 if __name__ == "__main__":
 	app.run()
