@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="album py-5 bg-light">
+    <div class="container">
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for result in results %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{result.url_to_img}}" alt="{{result.title}}" srcset="">
+                        <div class="card-body">
+                        <h3 style="color: black;">{{result.title}}</h3>
+                        <p class="card-text" style="color: black;">{{result.decription}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                            <a href="{{result.envent_url}}" class="btn btn-primary">Apply</a>
+                            </div>
+                            <small class="text-muted">Category: {{result.category}}</small>
+                            <a href="{{result.envent_url}}"><small class="text-muted">Source</small></a>
+                            <small class="text-muted">{{result.city}}</small>
+                        </div>
+                        </div>
+                    </div>
+                </div>            
+            {% endfor %}
+        </div>
+    </div>
+  </div>
+{% endblock %}
+
