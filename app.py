@@ -12,7 +12,7 @@ app.json.compact = False
 db = SQLAlchemy(app=app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-#database models
+#модели Sqlalchemy
 class Users(db.Model):
     __tablename__= 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -98,13 +98,12 @@ def login():
 
 @app.route('/logout')
 def logout():
-    # Clear the user's session
     session.pop('user_id', None)
 
     flash('You have been logged out.', 'info')
 
     return redirect(url_for('home'))
-
+#Функция для нахождения ивентов
 @app.route('/findevents')
 def events_page():
     if 'user_id' in session:
@@ -113,6 +112,8 @@ def events_page():
     else:
          username = ''
     return render_template('events.html', user=username)
+
+#функция для получения ивентов
 @app.route('/search', methods=['GET', 'POST'])
 def findEvents():
     if 'user_id' in session:
