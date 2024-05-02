@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user
-import sqlite3
+import re
 from werkzeug.security import generate_password_hash, check_password_hash
 #config
 app = Flask(__name__)
@@ -53,6 +53,7 @@ def loader_user(user_id):
 
 @app.route('/')
 def home():
+    session.pop('user_id', None)
     if 'user_id' in session:
         user = Users.query.filter_by(id=session['user_id']).first()
         username = user.username
@@ -62,22 +63,35 @@ def home():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def sign_up():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
-        hashed_password = generate_password_hash(password)
+    def sign_up():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            email = request.form['email']
 
-        existing_user = Users.query.filter_by(username=username).first()
-        if existing_user:
-            flash('Username already exists. Please choose a different one.', 'error')
-            return redirect(url_for('register'))
-        
-        new_user = Users(username=username, password=hashed_password, email=email)
-        db.session.add(new_user)
-        db.session.commit()
+            # смотри на формат пароля 
+            if len(password) > 8:
+                flash('Password should be no more than 8 characters.', 'error')
+                return redirect(url_for('register'))
 
-        flash('Registration successful. Please log in.', 'success')
+            # смотрим на формат мэйла
+            if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+                flash('Invalid email format.', 'error')
+                return redirect(url_for('register'))
+
+            # хэшируем 
+            hashed_password = generate_password_hash(password)
+
+            existing_user = Users.query.filter_by(username=username).first()
+            if existing_user:
+                flash('Username already exists. Please choose a different one.', 'error')
+                return redirect(url_for('register'))
+            
+            new_user = Users(username=username, password=hashed_password, email=email)
+            db.session.add(new_user)
+            db.session.commit()
+
+            flash('User successfully registered!', 'success')
         return redirect(url_for('login'))
     return render_template('sign_up.html')
 
